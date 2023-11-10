@@ -1,64 +1,56 @@
-import {
-  Box,
-  Card,
-  Layout,
-  Link,
-  List,
-  Page,
-  Text,
-  BlockStack,
-} from "@shopify/polaris";
+import { Box, Layout, Card, MediaCard, Form, FormLayout, Button, LegacyStack, Thumbnail, VideoThumbnail, DropZone, Page, Text } from '@shopify/polaris';
+import { CameraMajor } from '@shopify/polaris-icons';
+import { useState, useCallback } from 'react';
+
 
 export default function AdditionalPage() {
+  const [files, setFiles] = useState<File[]>([]);
+
+  const handleDropZoneDrop = useCallback(
+    (_dropFiles: File[], acceptedFiles: File[], _rejectedFiles: File[]) =>
+      setFiles((files) => [...files, ...acceptedFiles]),
+    [],
+  );
+
+// Add video mime types to this list
+const validVideoTypes = ['video/mp4', 'video/webm', 'video/mov'];
+const fileUpload = !files.length && <DropZone.FileUpload />;
+  const uploadedFiles = files.length > 0 && (
+    <div style={{padding: '0'}}>
+      <LegacyStack vertical>
+        {files.map((file, index) => (
+          <LegacyStack alignment="center" key={index}>
+            <VideoThumbnail
+              videoLength={80}
+              thumbnailUrl={url}
+              onClick={() => console.log('clicked')}
+              
+            />
+            <div>
+              {file.name}{' '}
+              <Text variant="bodySm" as="p">
+                {file.size} bytes
+              </Text>
+            </div>
+          </LegacyStack>
+        ))}
+      </LegacyStack>
+    </div>
+  );
+
+
   return (
     <Page>
       <ui-title-bar title="Additional page" />
       <Layout>
-        <Layout.Section>
-          <Card>
-            <BlockStack gap="300">
-              <Text as="p" variant="bodyMd">
-                The app template comes with an additional page which
-                demonstrates how to create multiple pages within app navigation
-                using{" "}
-                <Link
-                  url="https://shopify.dev/docs/apps/tools/app-bridge"
-                  target="_blank"
-                  removeUnderline
-                >
-                  App Bridge
-                </Link>
-                .
-              </Text>
-              <Text as="p" variant="bodyMd">
-                To create your own page and have it show up in the app
-                navigation, add a page inside <Code>app/routes</Code>, and a
-                link to it in the <Code>&lt;ui-nav-menu&gt;</Code> component
-                found in <Code>app/routes/app.jsx</Code>.
-              </Text>
-            </BlockStack>
-          </Card>
-        </Layout.Section>
-        <Layout.Section variant="oneThird">
-          <Card>
-            <BlockStack gap="200">
-              <Text as="h2" variant="headingMd">
-                Resources
-              </Text>
-              <List>
-                <List.Item>
-                  <Link
-                    url="https://shopify.dev/docs/apps/design-guidelines/navigation#app-nav"
-                    target="_blank"
-                    removeUnderline
-                  >
-                    App nav best practices
-                  </Link>
-                </List.Item>
-              </List>
-            </BlockStack>
-          </Card>
-        </Layout.Section>
+       <Layout.Section>
+        <Card>
+        <DropZone onDrop={handleDropZoneDrop}>
+      {uploadedFiles}
+      {fileUpload}
+    </DropZone>
+        </Card>
+      </Layout.Section>
       </Layout>
     </Page>
   );

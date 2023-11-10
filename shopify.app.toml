@@ -2,7 +2,7 @@
 
 name = "shopable-videos"
 client_id = "7baa4ef8063472025776c0a04a187f3e"
-application_url = "https://example.com"
+application_url = "https://psp-moms-buying-reseller.trycloudflare.com"
 embedded = true
 
 [access_scopes]
@@ -10,10 +10,19 @@ embedded = true
 scopes = "write_products"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [
+  "https://psp-moms-buying-reseller.trycloudflare.com/auth/callback",
+  "https://psp-moms-buying-reseller.trycloudflare.com/auth/shopify/callback",
+  "https://psp-moms-buying-reseller.trycloudflare.com/api/auth/callback",
+  "https://psp-moms-buying-reseller.trycloudflare.com/.shopify/graphiql/auth/callback"
+]
 
 [webhooks]
 api_version = "2023-10"
 
 [pos]
 embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "shoppable-videos.myshopify.com"

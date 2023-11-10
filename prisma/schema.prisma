@@ -20,3 +20,22 @@ model Session {
   accessToken String
   userId      BigInt?
 }
+
+model Video {
+  id          Int      @id @default(autoincrement())
+  name        String
+  url         String   
+  galleryId   Int?     
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Gallery     Gallery? @relation(fields: [galleryId], references: [id])
+}
+
+model Gallery {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  videos      Video[]  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
